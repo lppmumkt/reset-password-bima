@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password - Sistem Universitas</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .twitter-btn:hover {
+            background-color: #1a8cd8;
+        }
+        
+        .twitter-input:focus {
+            border-color: #1da1f2;
+            box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
+        }
+        
+        .success-bg {
+            background-color: #00ba7c;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-white font-sans">
+  <main class="min-h-full flex items-center justify-center px-4 py-12">
+   <div class="max-w-sm w-full"><!-- Logo -->
+    <div class="text-center mb-8">
+     <div class="mx-auto h-10 w-10 bg-black rounded-full flex items-center justify-center mb-8">
+      <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+     </div>
+    </div><!-- Title -->
+    <div class="mb-8">
+     <h1 id="page-title" class="text-3xl font-bold text-black mb-2">Lupa Password BIMA</h1>
+     <p id="subtitle" class="text-base text-gray-600 mb-4">LPPM Universitas Muhammadiyah Kalimantan Timur</p>
+    </div><!-- Form -->
+    <form id="resetForm" class="space-y-6" action="https://docs.google.com/forms/d/e/1FAIpQLSd_eT6OIHvTH7cHFRfI8Cgr_Yj4CXQJtd8l6UVmHhDQ-o7yGQ/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+     <!-- Nama Lengkap input mapped to Google Form entry.1669995092 -->
+     <div><input type="text" id="nama" name="entry.1669995092" required class="twitter-input w-full px-4 py-4 border-2 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-lg placeholder-gray-500" placeholder="Nama Lengkap">
+     </div>
+     <!-- Email input mapped to Google Form entry.1839343147 -->
+     <div><input type="email" id="email" name="entry.1839343147" required class="twitter-input w-full px-4 py-4 border-2 border-gray-200 rounded-md focus:outline-none transition-all duration-200 text-lg placeholder-gray-500" placeholder="Email">
+     </div><button type="submit" id="submit-btn" class="twitter-btn w-full bg-black text-white py-4 px-6 rounded-full font-bold text-base transition-colors duration-200 focus:outline-none"> <span id="button-text">Kirim Link Reset</span> </button>
+    </form>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {onFormSubmit()}"></iframe>
+    <!-- Success Message (Hidden by default) -->
+    <div id="success-message" class="hidden mt-6 p-4 success-bg text-white rounded-md">
+     <div class="flex items-center text-sm">
+      <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg><span>Link reset password telah dikirim ke email Anda. Silakan cek inbox dalam 1x24 jam.</span>
+     </div>
+    </div><!-- Footer -->
+    <div class="text-center mt-8">
+     <p id="footer-text" class="text-sm text-gray-500 mb-4">Deadline: 28 November 2025</p><a href="https://bima.kemdiktisaintek.go.id/" class="text-black hover:underline text-sm"> Kembali ke Halaman Login </a>
+    </div>
+   </div>
+  </main>
+  <script>
+        // Flag for iframe submission
+        var submitted = false;
+        
+        // Function called after form submission
+        function onFormSubmit() {
+            document.getElementById('success-message').classList.remove('hidden');
+            document.getElementById('nama').value = '';
+            document.getElementById('email').value = '';
+            submitted = false;
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('success-message').classList.add('hidden');
+            }, 5000);
+        }
+
+        // Default configuration
+        const defaultConfig = {
+            page_title: "Lupa Password",
+            subtitle: "Sistem Universitas Muhammadiyah Kalimantan Timur", 
+            instruction_text: "Masukkan email Anda untuk menerima link reset password dalam waktu 1x24 jam",
+            button_text: "Kirim Link Reset",
+            footer_text: "Butuh bantuan? Hubungi IT Support UMKT"
+        };
+
+        // Element SDK configuration
+        async function onConfigChange(config) {
+            document.getElementById('page-title').textContent = config.page_title || defaultConfig.page_title;
+            document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+            document.getElementById('instruction-text').textContent = config.instruction_text || defaultConfig.instruction_text;
+            document.getElementById('button-text').textContent = config.button_text || defaultConfig.button_text;
+            document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["page_title", config.page_title || defaultConfig.page_title],
+                ["subtitle", config.subtitle || defaultConfig.subtitle],
+                ["instruction_text", config.instruction_text || defaultConfig.instruction_text],
+                ["button_text", config.button_text || defaultConfig.button_text],
+                ["footer_text", config.footer_text || defaultConfig.footer_text]
+            ]);
+        }
+
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ea1b1de3b5cdf6',t:'MTc2MzE2MTAyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
